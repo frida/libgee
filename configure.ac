@@ -64,8 +64,6 @@ AC_ARG_ENABLE(consistency-check, [AS_HELP_STRING([--enable-consistency-check], [
               enable_consistency_check=$enableval, enable_consistency_check=no)
 AS_IF([test "x$enable_consistency_check" != xno], [VALA_ADD_VALAFLAGS(-D CONSISTENCY_CHECKS)])
 
-GOBJECT_INTROSPECTION_CHECK([0.9.0])
-
 VALA_CHECK([0.25.1])
 
 AC_OUTPUT([Makefile
