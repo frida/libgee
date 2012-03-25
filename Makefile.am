@@ -16,7 +16,6 @@ endif
 
 SUBDIRS = \
 	gee \
-	tests \
 	$(DOC_SUBDIR) \
 	$(BENCHMARK_SUBDIR) \
 	$(NULL)
