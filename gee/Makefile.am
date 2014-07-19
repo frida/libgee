@@ -128,7 +128,7 @@ libgee_0_8_la_VALAFLAGS = \
 	$(NULL)
 
 libgee_0_8_la_vala.stamp: $(libgee_0_8_la_VALASOURCES)
-	$(AM_V_VALAC)$(VALAC) $(VALAFLAGS) $(VALA_DEBUG_FLAGS) $(libgee_0_8_la_VALAFLAGS) -C $(libgee_0_8_la_VALASOURCES)
+	$(AM_V_VALAC)$(VALAC) $(VALAFLAGS) $(VALA_DEBUG_FLAGS) $(libgee_0_8_la_VALAFLAGS) -C $(addprefix $(srcdir)/,$(libgee_0_8_la_VALASOURCES))
 	@touch gee-0.8.vapi gee-internals-0.8.vapi gee.h gee-internals.h libgee_0_8_la_vala.stamp
 
 $(libgee_0_8_la_VALASOURCES:.vala=.c): libgee_0_8_la_vala.stamp
