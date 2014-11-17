@@ -36,6 +36,10 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 		_cmp = (owned)compare_func;
 	}
 
+	construct {
+		_head = new Tower<G>.head ();
+	}
+
 	~ConcurrentSet () {
 		HazardPointer.Context ctx = new HazardPointer.Context ();
 		Utils.Misc.unused (ctx);
@@ -246,7 +250,7 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 #endif
 
 	private int _size = 0;
-	private Tower<G> _head = new Tower<G>.head ();
+	private Tower<G> _head;
 	private CompareDataFunc<G>? _cmp;
 	private const int _MAX_HEIGHT = 31;
 	private static Private rand = new Private((ptr) => {

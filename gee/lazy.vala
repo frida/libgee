@@ -77,6 +77,10 @@ public class Gee.Lazy<G> {
 			_lazy = lazy;
 		}
 
+		construct {
+			_when_done = new Gee.Future.SourceFuncArrayElement<G>[0];
+		}
+
 		public bool ready {
 			get {
 				_mutex.lock ();
@@ -160,7 +164,7 @@ public class Gee.Lazy<G> {
 		private Cond _eval = Cond ();
 		private Lazy<G> _lazy;
 		private State _state = State.UNLOCK;
-		private Gee.Future.SourceFuncArrayElement<G>[]? _when_done = new Gee.Future.SourceFuncArrayElement<G>[0];
+		private Gee.Future.SourceFuncArrayElement<G>[]? _when_done;
 		private enum State {
 			UNLOCK,
 			EVAL
