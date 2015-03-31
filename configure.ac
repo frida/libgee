@@ -8,6 +8,7 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 # Checks for programs.
 AC_PROG_CC
 AM_PROG_CC_C_O
+AM_PROG_VALAC([0.28.0])
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 
@@ -63,8 +64,6 @@ AS_IF([test "x$enable_internal_asserts" = xno], [VALA_ADD_VALAFLAGS(-D DISABLE_I
 AC_ARG_ENABLE(consistency-check, [AS_HELP_STRING([--enable-consistency-check], [Enables (very) expensive consistency checks. It might affect the asymptotic performance.])],
               enable_consistency_check=$enableval, enable_consistency_check=no)
 AS_IF([test "x$enable_consistency_check" != xno], [VALA_ADD_VALAFLAGS(-D CONSISTENCY_CHECKS)])
-
-VALA_CHECK([0.25.1])
 
 AC_OUTPUT([Makefile
            gee-0.8.pc
