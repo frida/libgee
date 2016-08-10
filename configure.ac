@@ -66,8 +66,7 @@ AC_ARG_ENABLE(consistency-check, [AS_HELP_STRING([--enable-consistency-check], [
               enable_consistency_check=$enableval, enable_consistency_check=no)
 AS_IF([test "x$enable_consistency_check" != xno], [VALA_ADD_VALAFLAGS(-D CONSISTENCY_CHECKS)])
 
-AX_REQUIRE_DEFINED([GOBJECT_INTROSPECTION_CHECK])
-GOBJECT_INTROSPECTION_CHECK([0.9.0])
+AM_CONDITIONAL(HAVE_INTROSPECTION, false)
 
 AC_OUTPUT([Makefile
            gee-0.8.pc
