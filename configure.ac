@@ -15,7 +15,7 @@ LT_INIT([disable-static])
 LIBGEE_LT_VERSION="7:1:5"
 AC_SUBST(LIBGEE_LT_VERSION)
 
-GLIB_REQUIRED=2.36
+GLIB_REQUIRED=2.49
 
 VALA_ADD_CHECKFILE([gee/libgee_0_8_la_vala.stamp])
 VALA_ADD_CHECKFILE([tests/tests_vala.stamp])
