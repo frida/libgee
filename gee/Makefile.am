@@ -128,7 +128,7 @@ libgee_0_8_la_VALAFLAGS = \
 	$(NULL)
 
 libgee_0_8_la_vala.stamp: $(libgee_0_8_la_VALASOURCES)
-	$(AM_V_VALAC)$(VALAC) $(VALAFLAGS) $(VALA_DEBUG_FLAGS) $(libgee_0_8_la_VALAFLAGS) -C $(addprefix $(srcdir)/,$(libgee_0_8_la_VALASOURCES))
+	$(AM_V_VALAC)$(VALAC) $(VALAFLAGS) $(VALA_DEBUG_FLAGS) $(libgee_0_8_la_VALAFLAGS) -C $(libgee_0_8_la_VALASOURCES)
 	@touch gee-0.8.vapi gee-internals-0.8.vapi gee.h gee-internals.h libgee_0_8_la_vala.stamp
 
 $(libgee_0_8_la_VALASOURCES:.vala=.c): libgee_0_8_la_vala.stamp
@@ -145,6 +145,29 @@ vapidir = $(datadir)/vala/vapi
 dist_vapi_DATA = \
 	gee-0.8.vapi \
 	$(NULL)
+
+if HAVE_INTROSPECTION
+girdir = @INTROSPECTION_GIRDIR@
+
+dist_gir_DATA = \
+	Gee-0.8.gir \
+	$(NULL)
+
+typelibdir = @INTROSPECTION_TYPELIBDIR@
+typelib_DATA = \
+	Gee-0.8.typelib \
+	$(NULL)
+
+# Extract dlname from libfolks.la; see bug #658002.
+# This is what g-ir-scanner does.
+libgee_dlname = \
+	`$(SED) -nE "s/^dlname='([A-Za-z0-9.+-]+)'/\1/p" libgee-0.8.la`
+INTROSPECTION_COMPILER_ARGS= \
+	-l $(libgee_dlname)
+Gee-0.8.gir: libgee_0_8_la_vala.stamp
+Gee-0.8.typelib: Gee-0.8.gir libgee-0.8.la
+	@INTROSPECTION_COMPILER@ $(INTROSPECTION_COMPILER_ARGS) -o $@ $^
+endif
 
 MOSTLYCLEANFILES = \
 	$(libgee_0_8_la_VALASOURCES:.vala=.c) \

@@ -1,5 +1,5 @@
 include $(top_srcdir)/Makefile.decl
-ACLOCAL_AMFLAGS = -I m4
+ACLOCAL_AMFLAGS = --install -I m4
 AM_DISTCHECK_CONFIGURE_FLAGS = --enable-introspection=no --enable-vala
 
 if ENABLE_DOC
@@ -16,6 +16,7 @@ endif
 
 SUBDIRS = \
 	gee \
+	tests \
 	$(DOC_SUBDIR) \
 	$(BENCHMARK_SUBDIR) \
 	$(NULL)
@@ -53,5 +54,6 @@ EXTRA_DIST += \
 	gitlog-to-changelog \
 	MAINTAINERS \
 	gee-0.8.pc.in \
+	utils/geeutils.vapi \
 	$(NULL)
 

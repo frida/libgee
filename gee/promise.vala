@@ -34,12 +34,6 @@ using GLib;
  * @since 0.11.0
  */
 public class Gee.Promise<G> {
-	private Future<G> _future;
-
-	public Promise () {
-		_future = new Future<G> ();
-	}
-
 	~Promise () {
 		_future.abandon ();
 	}
@@ -72,10 +66,6 @@ public class Gee.Promise<G> {
 	}
 
 	private class Future<G> : Object, Gee.Future<G> {
-		internal Future () {
-			_when_done = new Gee.Future.SourceFuncArrayElement<G>[0];
-		}
-
 		public bool ready {
 			get {
 				_mutex.lock ();
@@ -206,7 +196,7 @@ public class Gee.Promise<G> {
 		private State _state;
 		private G? _value;
 		private GLib.Error? _exception;
-		private Gee.Future.SourceFuncArrayElement<G>[]? _when_done;
+		private Gee.Future.SourceFuncArrayElement<G>[]? _when_done = new Gee.Future.SourceFuncArrayElement<G>[0];
 
 		private enum State {
 			INIT,
@@ -215,5 +205,6 @@ public class Gee.Promise<G> {
 			READY
 		}
 	}
+	private Future<G> _future = new Future<G>();
 }
 

@@ -60,7 +60,11 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	private Type2Node<G>? _lm_head = null;
 	private Type2Node<G>? _lm_tail = null;
 	private Type1Node<G>? _p = null;
-	private Type1Node<G>?[] _a;
+#if VALA_0_16
+	private Type1Node<G>?[] _a = new Type1Node<G>?[0];
+#else
+	private Type1Node<G>?[] _a = new Type1Node<G>[0];
+#endif
 	private NodePair<G>? _lp_head = null;
 	private unowned NodePair<G>? _lp_tail = null;
 	private bool[] _b = new bool[0];
@@ -79,11 +83,6 @@ public class Gee.PriorityQueue<G> : Gee.AbstractQueue<G> {
 	 * @param compare_func an optional element comparator function
 	 */
 	public PriorityQueue (owned CompareDataFunc<G>? compare_func = null) {
-#if VALA_0_16
-		_a = new Type1Node<G>?[0];
-#else
-		_a = new Type1Node<G>[0];
-#endif
 		if (compare_func == null) {
 			compare_func = Functions.get_compare_func_for (typeof (G));
 		}

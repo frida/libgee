@@ -1,32 +1,37 @@
-#!/bin/bash
+#!/bin/sh
 
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
-pushd $srcdir >/dev/null
 
-if [ "$1" = "clean" ]; then
-  [ -f "Makefile" ] && make maintainer-clean
+(test -f $srcdir/configure.ac) || {
+	echo "**Error**: Directory "\`$srcdir\'" does not look like the top-level project directory"
+	exit 1
+}
 
-  rm -f aclocal.m4 configure missing install-sh \
-    depcomp ltmain.sh config.guess config.sub \
-    config.h.in `find . -name Makefile.in` compile
-  rm -rf autom4te.cache
+PKG_NAME=`autoconf --trace 'AC_INIT:$1' "$srcdir/configure.ac"`
 
-  popd &>/dev/null
-  exit 0
+if [ "$#" = 0 -a "x$NOCONFIGURE" = "x" ]; then
+	echo "**Warning**: I am going to run \`configure' with no arguments." >&2
+	echo "If you wish to pass any to it, please specify them on the" >&2
+	echo \`$0\'" command line." >&2
+	echo "" >&2
 fi
 
-touch ChangeLog INSTALL
+set -x
+aclocal --install || exit 1
+autoreconf --verbose --force --install -Wno-portability || exit 1
+set +x
 
-autoreconf -ifv
-result=$?
+if [ "$NOCONFIGURE" = "" ]; then
+        set -x
+        $srcdir/configure "$@" || exit 1
+        set +x
 
-if [ $result -eq 0 ] && [ -z "$NOCONFIGURE" ]; then
-  "$srcdir/configure" "$@"
-  result=$?
+        if [ "$1" = "--help" ]; then exit 0 else
+                echo "Now type \`make\' to compile $PKG_NAME" || exit 1
+        fi
+else
+        echo "Skipping configure process."
 fi
 
-popd >/dev/null
-
-exit $result
