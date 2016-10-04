@@ -30,7 +30,6 @@
  */
 public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 	public ConcurrentSet (owned CompareDataFunc<G>? compare_func = null) {
-		_head = new Tower<G>.head ();
 		if (compare_func == null) {
 			compare_func = Functions.get_compare_func_for (typeof (G));
 		}
@@ -247,9 +246,9 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 #endif
 
 	private int _size = 0;
-	private Tower<G> _head;
+	private Tower<G> _head = new Tower<G>.head ();
 	private CompareDataFunc<G>? _cmp;
-	private static const int _MAX_HEIGHT = 31;
+	private const int _MAX_HEIGHT = 31;
 	private static Private rand = new Private((ptr) => {
 		Rand *rnd = (Rand *)ptr;
 		delete rnd;
@@ -1420,7 +1419,7 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 			return ah ? -1 : cmp(a._data, b);
 		}
 
-		[NoArrayLength]
+		[CCode (array_length = false)]
 		public TowerNode<G>[] _nodes;
 		public G _data;
 		public int _height;
@@ -1432,7 +1431,7 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 	}
 
 	private struct TowerIter<G> {
-		[NoArrayLength]
+		[CCode (array_length = false)]
 		public Tower<G>? _iter[31 /*_MAX_HEIGHT*/];
 	}
 

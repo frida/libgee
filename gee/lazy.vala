@@ -75,7 +75,6 @@ public class Gee.Lazy<G> {
 	private class Future<G> : Object, Gee.Future<G> {
 		public Future (Lazy<G> lazy) {
 			_lazy = lazy;
-			_when_done = new Gee.Future.SourceFuncArrayElement<G>[0];
 		}
 
 		public bool ready {
@@ -161,7 +160,7 @@ public class Gee.Lazy<G> {
 		private Cond _eval = Cond ();
 		private Lazy<G> _lazy;
 		private State _state = State.UNLOCK;
-		private Gee.Future.SourceFuncArrayElement<G>[]? _when_done;
+		private Gee.Future.SourceFuncArrayElement<G>[]? _when_done = new Gee.Future.SourceFuncArrayElement<G>[0];
 		private enum State {
 			UNLOCK,
 			EVAL
