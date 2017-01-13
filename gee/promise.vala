@@ -34,8 +34,6 @@ using GLib;
  * @since 0.11.0
  */
 public class Gee.Promise<G> {
-	private Future<G> _future;
-
 	public Promise () {
 		_future = new Future<G> ();
 	}
@@ -72,7 +70,7 @@ public class Gee.Promise<G> {
 	}
 
 	private class Future<G> : Object, Gee.Future<G> {
-		construct {
+		public Future () {
 			_when_done = new Gee.Future.SourceFuncArrayElement<G>[0];
 		}
 
@@ -215,5 +213,6 @@ public class Gee.Promise<G> {
 			READY
 		}
 	}
+	private Future<G> _future;
 }
 

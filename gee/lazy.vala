@@ -75,9 +75,6 @@ public class Gee.Lazy<G> {
 	private class Future<G> : Object, Gee.Future<G> {
 		public Future (Lazy<G> lazy) {
 			_lazy = lazy;
-		}
-
-		construct {
 			_when_done = new Gee.Future.SourceFuncArrayElement<G>[0];
 		}
 

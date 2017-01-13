@@ -34,9 +34,6 @@ public class Gee.ConcurrentSet<G> : AbstractSortedSet<G> {
 			compare_func = Functions.get_compare_func_for (typeof (G));
 		}
 		_cmp = (owned)compare_func;
-	}
-
-	construct {
 		_head = new Tower<G>.head ();
 	}
 
