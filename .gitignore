@@ -39,6 +39,3 @@ gee/gee-internals-0.8.vapi
 benchmark/benchmarks
 tests/tests
 tests/coverage
-
-/x86
-/x86_64
