@@ -1,4 +1,4 @@
-AC_INIT([libgee], [0.19.91], [https://bugzilla.gnome.org/enter_bug.cgi?product=libgee], [libgee])
+AC_INIT([libgee], [0.20.0], [https://bugzilla.gnome.org/enter_bug.cgi?product=libgee], [libgee])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
@@ -8,15 +8,14 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 # Checks for programs.
 AC_PROG_CC
 AM_PROG_CC_C_O
-AM_PROG_VALAC([0.35.6])
 
 LT_PREREQ([2.2.6])
 LT_INIT([disable-static])
 
-LIBGEE_LT_VERSION="7:1:5"
+LIBGEE_LT_VERSION="8:0:6"
 AC_SUBST(LIBGEE_LT_VERSION)
 
-GLIB_REQUIRED=2.51
+GLIB_REQUIRED=2.36
 
 VALA_ADD_CHECKFILE([gee/libgee_0_8_la_vala.stamp])
 VALA_ADD_CHECKFILE([tests/tests_vala.stamp])
@@ -66,7 +65,10 @@ AC_ARG_ENABLE(consistency-check, [AS_HELP_STRING([--enable-consistency-check], [
               enable_consistency_check=$enableval, enable_consistency_check=no)
 AS_IF([test "x$enable_consistency_check" != xno], [VALA_ADD_VALAFLAGS(-D CONSISTENCY_CHECKS)])
 
-AM_CONDITIONAL(HAVE_INTROSPECTION, false)
+AX_REQUIRE_DEFINED([GOBJECT_INTROSPECTION_CHECK])
+GOBJECT_INTROSPECTION_CHECK([0.9.0])
+
+VALA_CHECK([0.25.1])
 
 AC_OUTPUT([Makefile
            gee-0.8.pc
