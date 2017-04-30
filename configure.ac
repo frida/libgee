@@ -8,6 +8,7 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 # Checks for programs.
 AC_PROG_CC
 AM_PROG_CC_C_O
+AM_PROG_VALAC([0.25.1])
 
 LT_PREREQ([2.2.6])
 LT_INIT([disable-static])
@@ -67,8 +68,6 @@ AS_IF([test "x$enable_consistency_check" != xno], [VALA_ADD_VALAFLAGS(-D CONSIST
 
 AX_REQUIRE_DEFINED([GOBJECT_INTROSPECTION_CHECK])
 GOBJECT_INTROSPECTION_CHECK([0.9.0])
-
-VALA_CHECK([0.25.1])
 
 AC_OUTPUT([Makefile
            gee-0.8.pc
