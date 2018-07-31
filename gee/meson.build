@@ -115,7 +115,7 @@ endif
 
 gee = library('gee-@0@'.format(API_VERSION),
 	valasources + sources,
-	version : PROJECT_VERSION,
+	version : API_VERSION,
 	vala_header : 'gee.h',
 	vala_vapi : 'gee-@0@.vapi'.format(API_VERSION),
 	vala_gir : 'Gee-@0@.gir'.format(API_VERSION),
