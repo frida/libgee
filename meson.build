@@ -1,4 +1,5 @@
-project('libgee', [ 'vala', 'c'])
+project('libgee', 'vala', 'c',
+	version : '0.20.1')
 
 gio = dependency('gio-2.0')
 
@@ -6,7 +7,6 @@ VALADEPS = 'gio-2.0'
 PCDEPS = 'gio-2.0'
 
 API_VERSION = '0.8'
-PROJECT_VERSION = '0.20.0'
 
 conf = configuration_data()
 conf.set('prefix', get_option('prefix'))
@@ -17,7 +17,7 @@ conf.set('datarootdir', join_paths ('${prefix}','share'))
 conf.set('datadir', '${datarootdir}')
 conf.set('VALADEPS', VALADEPS)
 conf.set('PCDEPS', PCDEPS)
-conf.set('VERSION', PROJECT_VERSION)
+conf.set('VERSION', meson.project_version())
 conf.set('API_VERSION', API_VERSION)
 
 configure_file(input : 'gee-0.8.pc.in',
