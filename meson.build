@@ -8,6 +8,12 @@ PCDEPS = 'gio-2.0'
 
 API_VERSION = '0.8'
 
+buildtype = get_option('buildtype')
+if buildtype == 'release' or buildtype == 'minsize'
+  add_project_arguments(['-DG_DISABLE_CAST_CHECKS', '-DG_DISABLE_ASSERT', '-DG_DISABLE_CHECKS'],
+			language : 'c')
+endif
+
 conf = configuration_data()
 conf.set('prefix', get_option('prefix'))
 conf.set('exec_prefix', '${prefix}')
