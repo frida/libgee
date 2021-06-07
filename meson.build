@@ -8,6 +8,10 @@ PCDEPS = 'gio-2.0'
 
 API_VERSION = '0.8'
 
+if get_option('default_library') == 'static'
+  add_project_arguments('-DVALA_EXTERN=extern', language : 'c')
+endif
+
 ndebug = get_option('b_ndebug')
 if ndebug == 'true' or (ndebug == 'if-release' and not get_option('debug'))
   add_project_arguments(['-DG_DISABLE_CAST_CHECKS', '-DG_DISABLE_ASSERT', '-DG_DISABLE_CHECKS'],
