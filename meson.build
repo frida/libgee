@@ -30,11 +30,17 @@ conf.set('PCDEPS', PCDEPS)
 conf.set('VERSION', meson.project_version())
 conf.set('API_VERSION', API_VERSION)
 
+if host_machine.system() == 'freebsd'
+  pcdir = join_paths('libdata', 'pkgconfig')
+else
+  pcdir = join_paths(get_option('libdir'), 'pkgconfig')
+endif
+
 configure_file(input : 'gee-0.8.pc.in',
 	output : 'gee-@0@.pc'.format(API_VERSION),
 	configuration : conf,
 	install : true,
-	install_dir : join_paths(get_option('libdir'), 'pkgconfig'))
+	install_dir : pcdir)
 
 vapidir = join_paths (get_option('datadir'),'vala','vapi')
 
