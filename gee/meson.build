@@ -105,13 +105,7 @@ if enable_consistency_check_opt
 	enable_consistency_check_args += ['-D','CONSISTENCY_CHECKS']
 endif
 
-# Can't prevent install generated GIR file
 disable_introspection = get_option('disable-introspection')
-introspectiondir=false
-if disable_introspection
-else
-introspectiondir = join_paths (get_option('includedir'),'gee-@0@'.format (API_VERSION))
-endif
 
 gee = library('gee-@0@'.format(API_VERSION),
 	valasources + sources,
@@ -123,10 +117,10 @@ gee = library('gee-@0@'.format(API_VERSION),
 	dependencies : [ gio, include_utils_h_dir_dep ],
 	install : true,
 	install_dir : [
-		get_option('libdir'),
-		introspectiondir,
 		true,
+		get_option('includedir') / 'gee-@0@'.format(API_VERSION),
 		true,
+		not disable_introspection,
 	])
 
 if disable_introspection
