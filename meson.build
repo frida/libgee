@@ -1,6 +1,8 @@
 project('libgee', 'vala', 'c',
 	version : '0.20.6')
 
+cc = meson.get_compiler('c')
+
 gio = dependency('gio-2.0')
 
 VALADEPS = 'gio-2.0'
@@ -16,6 +18,10 @@ ndebug = get_option('b_ndebug')
 if ndebug == 'true' or (ndebug == 'if-release' and not get_option('debug'))
   add_project_arguments(['-DG_DISABLE_CAST_CHECKS', '-DG_DISABLE_ASSERT', '-DG_DISABLE_CHECKS'],
 			language : 'c')
+endif
+
+if cc.get_argument_syntax() == 'msvc'
+  add_project_arguments('-D_CRT_DECLARE_NONSTDC_NAMES=0', language : 'c')
 endif
 
 conf = configuration_data()
