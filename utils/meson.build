@@ -1,14 +1,13 @@
-utilsf = files ([
+utilsf = files([
 	'assume.h',
 	'async.h',
 	'free.h',
 	'misc.h'])
-utilsvapi = files (['geeutils.vapi'])
+utilsvapi = files(['geeutils.vapi'])
 
+include_utils_h_dir = include_directories('.')
 
-include_utils_h_dir = include_directories ('.')
+include_utils_h_dir_dep = declare_dependency(include_directories : include_utils_h_dir)
 
-include_utils_h_dir_dep = declare_dependency (include_directories : include_utils_h_dir)
-
-add_project_arguments (['--vapidir', join_paths (meson.current_source_dir ())],
+add_project_arguments(['--vapidir', meson.current_source_dir()],
 	language: 'vala')

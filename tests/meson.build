@@ -1,4 +1,4 @@
-testf = files ([
+testf = files([
 	'testarraylist.vala',
 	'testarrayqueue.vala',
 	'testbidirlist.vala',
@@ -40,11 +40,10 @@ testf = files ([
 	'testunrolledlinkedlist.vala'
 ])
 
-t = executable('tests',
-	testf,
+t = executable('tests', testf,
 	vala_args : ['--pkg', 'geeutils', '--pkg', 'posix'],
 	dependencies : [ gio, include_utils_h_dir_dep, includehdir_dep ],
-	link_with: gee
+	link_with : gee
 )
 
-test ('tests', t)
+test('tests', t)

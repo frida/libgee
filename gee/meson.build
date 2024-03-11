@@ -7,12 +7,12 @@
 
 # TODO: Add translation support
 #confh = configuration_data ()
-#confh.set_quoted('PACKAGE_LOCALE_DIR', join_paths(get_option('prefix'), get_option('datadir'), 'locale'))
+#confh.set_quoted('PACKAGE_LOCALE_DIR', get_option('prefix') / get_option('datadir') / 'locale')
 #confh.set_quoted('GETTEXT_PACKAGE', 'GXml')
 #configure_file(output : 'config.h',
 #	configuration : confh)
 
-valasources = files ([
+gee_sources = files([
 	'assemblyinfo.vala',
 	'abstractbidirlist.vala',
 	'abstractbidirsortedset.vala',
@@ -88,18 +88,16 @@ valasources = files ([
 	'unrolledlinkedlist.vala'
 ])
 
-sources = files ([])
+includehdir = include_directories('.')
+includehdir_dep = declare_dependency(include_directories : includehdir)
 
-includehdir = include_directories ('.')
-includehdir_dep = declare_dependency (include_directories : includehdir)
-
-internal_asserts_opt = get_option ('disable-internal-asserts')
+internal_asserts_opt = get_option('disable-internal-asserts')
 internal_asserts_args = []
 if internal_asserts_opt
 	internal_asserts_args += ['-D','DISABLE_INTERNAL_ASSERTS']
 endif
 
-enable_consistency_check_opt = get_option ('enable-consistency-check')
+enable_consistency_check_opt = get_option('enable-consistency-check')
 enable_consistency_check_args = []
 if enable_consistency_check_opt
 	enable_consistency_check_args += ['-D','CONSISTENCY_CHECKS']
@@ -107,18 +105,17 @@ endif
 
 disable_introspection = get_option('disable-introspection')
 
-gee = library('gee-@0@'.format(API_VERSION),
-	valasources + sources,
+gee = library(gee_api_name, gee_sources,
 	version : API_VERSION,
 	vala_header : 'gee.h',
-	vala_vapi : 'gee-@0@.vapi'.format(API_VERSION),
+	vala_vapi : f'@gee_api_name@.vapi',
 	vala_gir : 'Gee-@0@.gir'.format(API_VERSION),
 	vala_args : ['--pkg=gio-2.0', '--pkg=geeutils'] + internal_asserts_args + enable_consistency_check_args,
 	dependencies : [ gio, include_utils_h_dir_dep ],
 	install : true,
 	install_dir : [
 		true,
-		get_option('includedir') / 'gee-@0@'.format(API_VERSION),
+		get_option('includedir') / gee_api_name,
 		true,
 		not disable_introspection,
 	])
@@ -127,7 +124,14 @@ gee_dep = declare_dependency(
 	include_directories : include_directories('.'),
 	link_with : gee)
 
-meson.override_dependency('gee-0.8', gee_dep)
+meson.override_dependency(gee_api_name, gee_dep)
+
+pkg = import('pkgconfig')
+pkg.generate(gee,
+	name : 'libgee',
+	description : 'The GObject collection library',
+	filebase : gee_api_name,
+	subdirs : gee_api_name)
 
 if disable_introspection
 else
@@ -138,11 +142,11 @@ else
 				g_ir_compiler,
 				'--shared-library', 'libgee-@0@.so'.format (API_VERSION),
 				'--output', '@OUTPUT@',
-				join_paths(meson.current_build_dir(), 'Gee-@0@.gir'.format(API_VERSION))
+				meson.current_build_dir() / f'Gee-@API_VERSION@.gir',
 			],
 			output: 'Gee-@0@.typelib'.format(API_VERSION),
 			depends: gee,
 			install: true,
-			install_dir: join_paths(get_option('libdir'), 'girepository-1.0'))
+			install_dir: get_option('libdir') / 'girepository-1.0')
 	endif
 endif

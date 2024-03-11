@@ -17,6 +17,8 @@ PCDEPS = 'gio-2.0'
 
 API_VERSION = '0.8'
 
+gee_api_name = f'gee-@API_VERSION@'
+
 if get_option('default_library') == 'static'
   add_project_arguments('-DVALA_EXTERN=extern', language : 'c')
 endif
@@ -34,31 +36,19 @@ endif
 conf = configuration_data()
 conf.set('prefix', get_option('prefix'))
 conf.set('exec_prefix', '${prefix}')
-conf.set('libdir', join_paths ('${prefix}',get_option ('libdir')))
-conf.set('includedir', join_paths ('${prefix}',get_option ('includedir')))
-conf.set('datarootdir', join_paths ('${prefix}','share'))
+conf.set('libdir', '${prefix}' / get_option('libdir'))
+conf.set('includedir', '${prefix}' / get_option('includedir'))
+conf.set('datarootdir', '${prefix}' / 'share')
 conf.set('datadir', '${datarootdir}')
 conf.set('VALADEPS', VALADEPS)
 conf.set('PCDEPS', PCDEPS)
 conf.set('VERSION', meson.project_version())
 conf.set('API_VERSION', API_VERSION)
 
-if host_machine.system() == 'freebsd'
-  pcdir = join_paths('libdata', 'pkgconfig')
-else
-  pcdir = join_paths(get_option('libdir'), 'pkgconfig')
-endif
-
-configure_file(input : 'gee-0.8.pc.in',
-	output : 'gee-@0@.pc'.format(API_VERSION),
-	configuration : conf,
-	install : true,
-	install_dir : pcdir)
-
-vapidir = join_paths (get_option('datadir'),'vala','vapi')
+vapidir = get_option('datadir') / 'vala' / 'vapi'
 
 configure_file(input : 'gee.deps.in',
-	output : 'gee-@0@.deps'.format(API_VERSION),
+	output : f'@gee_api_name@.deps',
 	configuration : conf,
 	install : true,
 	install_dir : vapidir)
@@ -66,14 +56,12 @@ configure_file(input : 'gee.deps.in',
 # Coverage is supported in Meson, so no code is added to libgee
 # for coverage how-to, go to: http://mesonbuild.com/howtox.html#producing-a-coverage-report
 
-
-
 subdir('utils')
 subdir('gee')
 subdir('doc')
 subdir('tests')
 
-benchmarks_opt = get_option ('enable-benchmark')
+benchmarks_opt = get_option('enable-benchmark')
 if benchmarks_opt
 	subdir('benchmark')
 endif
