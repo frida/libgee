@@ -113,7 +113,7 @@ gee = library('gee-@0@'.format(API_VERSION),
 	vala_header : 'gee.h',
 	vala_vapi : 'gee-@0@.vapi'.format(API_VERSION),
 	vala_gir : 'Gee-@0@.gir'.format(API_VERSION),
-	vala_args : [ '--pkg', 'geeutils'] + internal_asserts_args + enable_consistency_check_args,
+	vala_args : ['--pkg=gio-2.0', '--pkg=geeutils'] + internal_asserts_args + enable_consistency_check_args,
 	dependencies : [ gio, include_utils_h_dir_dep ],
 	install : true,
 	install_dir : [
@@ -122,6 +122,12 @@ gee = library('gee-@0@'.format(API_VERSION),
 		true,
 		not disable_introspection,
 	])
+
+gee_dep = declare_dependency(
+	include_directories : include_directories('.'),
+	link_with : gee)
+
+meson.override_dependency('gee-0.8', gee_dep)
 
 if disable_introspection
 else
