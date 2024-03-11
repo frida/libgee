@@ -3,6 +3,13 @@ project('libgee', 'vala', 'c',
 
 cc = meson.get_compiler('c')
 
+if meson.is_subproject()
+  add_project_arguments('--disable-warnings', language: 'vala')
+  if cc.get_argument_syntax() != 'msvc'
+    add_project_arguments('-w', language: 'c')
+  endif
+endif
+
 gio = dependency('gio-2.0')
 
 VALADEPS = 'gio-2.0'
