@@ -59,7 +59,11 @@ configure_file(input : 'gee.deps.in',
 subdir('utils')
 subdir('gee')
 subdir('doc')
-subdir('tests')
+if get_option('tests') \
+		.disable_auto_if(meson.is_subproject() or not meson.can_run_host_binaries()) \
+		.allowed()
+	subdir('tests')
+endif
 
 benchmarks_opt = get_option('enable-benchmark')
 if benchmarks_opt

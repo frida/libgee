@@ -3,3 +3,4 @@ option('disable-internal-asserts', type : 'boolean', value : false, description 
 option('enable-consistency-check', type : 'boolean', value : false, description : 'Enables (very) expensive consistency checks. It might affect the asymptotic performance.')
 option('enable-doc', type : 'boolean', value : false, description : 'Enable documentation generation')
 option('disable-introspection', type : 'boolean', value : false, description : 'Disable introspection generation')
+option('tests', type : 'feature', value : 'auto', description : 'Build tests')
